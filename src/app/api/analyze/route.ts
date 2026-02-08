@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { auth } from "@/lib/auth";
+import { hasActiveSubscription, checkAndIncrementUsage } from "@/lib/subscription";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-// Simple in-memory rate limiting
-const rateLimit = new Map<string, { count: number; reset: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimit.get(ip);
-  if (!entry || now > entry.reset) {
-    rateLimit.set(ip, { count: 1, reset: now + 3600000 }); // 1 hour window
-    return true;
-  }
-  if (entry.count >= 10) return false; // 10 per hour
-  entry.count++;
-  return true;
-}
 
 const SYSTEM_PROMPT = `You are CasePrep AI, an expert MBA case study analyst. Analyze the provided business case and return a JSON object with this exact structure:
 
@@ -57,15 +44,34 @@ Rules:
 - Return ONLY valid JSON, no markdown.`;
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
-  
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json({ error: "Rate limit exceeded. Try again in an hour or upgrade to Pro." }, { status: 429 });
+  // Auth check
+  const session = await auth.api.getSession({ headers: req.headers });
+  if (!session?.user) {
+    return NextResponse.json(
+      { error: "Please sign in to analyze cases." },
+      { status: 401 }
+    );
+  }
+
+  // Subscription check
+  if (!hasActiveSubscription(session.user.id)) {
+    return NextResponse.json(
+      { error: "Active subscription required. Subscribe at /pricing to continue." },
+      { status: 403 }
+    );
+  }
+
+  // Rate limit: 50 per month
+  if (!checkAndIncrementUsage(session.user.id, 50)) {
+    return NextResponse.json(
+      { error: "Monthly analysis limit reached (50/month). Resets next month." },
+      { status: 429 }
+    );
   }
 
   try {
     const { caseText } = await req.json();
-    
+
     if (!caseText || caseText.trim().length < 100) {
       return NextResponse.json({ error: "Please provide at least 100 characters of case content." }, { status: 400 });
     }

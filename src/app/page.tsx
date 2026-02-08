@@ -15,12 +15,20 @@ export default function Home() {
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
           Paste any business case. Get framework analysis, discussion questions, and executive summaries in <span className="text-white font-semibold">60 seconds</span>.
         </p>
-        <Link
-          href="/analyze"
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors"
-        >
-          Analyze a Case <ArrowRight className="h-5 w-5" />
-        </Link>
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href="/sign-up"
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors"
+          >
+            Get Started <ArrowRight className="h-5 w-5" />
+          </Link>
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-2 border border-border hover:bg-accent text-foreground px-8 py-3.5 rounded-lg text-lg font-medium transition-colors"
+          >
+            View Pricing
+          </Link>
+        </div>
       </section>
 
       {/* Features */}
@@ -61,69 +69,28 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="max-w-6xl mx-auto px-4 pb-20">
+      <section className="max-w-6xl mx-auto px-4 pb-20" id="pricing">
         <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-lg mb-1">Free</h3>
-            <p className="text-3xl font-bold mb-4">$0</p>
-            <ul className="space-y-2 text-sm text-muted-foreground mb-6">
-              <li>✓ 3 analyses per week</li>
-              <li>✓ All 6 analysis sections</li>
-              <li>✓ Local history</li>
-            </ul>
-            <Link href="/analyze" className="block text-center border border-border rounded-lg py-2 text-sm hover:bg-accent transition-colors">
-              Get Started
-            </Link>
-          </div>
-          <div className="bg-card border-2 border-blue-500 rounded-xl p-6 relative">
+        <div className="max-w-sm mx-auto">
+          <div className="bg-card border-2 border-blue-500 rounded-xl p-8 relative text-center">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-              Most Popular
+              Pro Plan
             </div>
-            <h3 className="font-semibold text-lg mb-1">Monthly</h3>
-            <p className="text-3xl font-bold mb-4">$7<span className="text-base font-normal text-muted-foreground">/mo</span></p>
-            <ul className="space-y-2 text-sm text-muted-foreground mb-6">
-              <li>✓ Unlimited analyses</li>
-              <li>✓ PDF upload</li>
-              <li>✓ Cloud history</li>
-              <li>✓ Priority processing</li>
+            <p className="text-5xl font-bold mb-1">$9<span className="text-lg font-normal text-muted-foreground">/mo</span></p>
+            <p className="text-muted-foreground text-sm mb-6">50 analyses per month · Cancel anytime</p>
+            <ul className="space-y-2 text-sm text-left mb-6">
+              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500 shrink-0" /> 50 case analyses per month</li>
+              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500 shrink-0" /> All 6 analysis sections</li>
+              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500 shrink-0" /> Cloud history & bookmarks</li>
+              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500 shrink-0" /> Priority processing</li>
             </ul>
-            <Link href="/analyze" className="block text-center bg-blue-600 hover:bg-blue-500 text-white rounded-lg py-2 text-sm transition-colors">
-              Start Free Trial
+            <Link
+              href="/sign-up"
+              className="block bg-blue-600 hover:bg-blue-500 text-white rounded-lg py-3 font-medium transition-colors"
+            >
+              Start Now
             </Link>
           </div>
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-lg mb-1">Semester</h3>
-            <p className="text-3xl font-bold mb-4">$29<span className="text-base font-normal text-muted-foreground">/sem</span></p>
-            <ul className="space-y-2 text-sm text-muted-foreground mb-6">
-              <li>✓ Everything in Monthly</li>
-              <li>✓ 4 months access</li>
-              <li>✓ Save 17%</li>
-            </ul>
-            <Link href="/analyze" className="block text-center border border-border rounded-lg py-2 text-sm hover:bg-accent transition-colors">
-              Best Value
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="max-w-6xl mx-auto px-4 pb-20">
-        <h2 className="text-3xl font-bold text-center mb-12">What Students Say</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            { name: "Sarah K.", school: "HBS '26", quote: "I went from dreading cold calls to volunteering. CasePrep gives me the confidence to speak up in every class." },
-            { name: "Marcus T.", school: "Wharton '25", quote: "Saved me 10+ hours per week. The framework analysis is spot-on and the discussion questions are exactly what professors ask." },
-            { name: "Priya R.", school: "Kellogg '26", quote: "The counter-arguments section is gold. I always have a unique perspective that impresses my study group." },
-          ].map((t) => (
-            <div key={t.name} className="bg-card border border-border rounded-xl p-6">
-              <p className="text-sm text-muted-foreground mb-4 italic">&ldquo;{t.quote}&rdquo;</p>
-              <div>
-                <p className="font-medium text-sm">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.school}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -132,13 +99,13 @@ export default function Home() {
         <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/20 rounded-2xl p-12">
           <h2 className="text-3xl font-bold mb-4">Stop Over-Prepping. Start Out-Performing.</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Join thousands of MBA students who prep smarter, not harder. 
+            Join MBA students who prep smarter, not harder.
           </p>
           <Link
-            href="/analyze"
+            href="/sign-up"
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors"
           >
-            Try It Free <ArrowRight className="h-5 w-5" />
+            Get Started Free <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>

@@ -3,16 +3,24 @@
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
-const links = [
+const publicLinks = [
   { href: "/", label: "Home" },
+  { href: "/pricing", label: "Pricing" },
+];
+
+const authLinks = [
+  { href: "/dashboard", label: "Dashboard" },
   { href: "/analyze", label: "Analyze" },
   { href: "/history", label: "History" },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const links = session ? authLinks : publicLinks;
 
   return (
     <nav className="no-print border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
@@ -36,6 +44,14 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
+          {!session && (
+            <Link
+              href="/sign-in"
+              className="ml-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </nav>
